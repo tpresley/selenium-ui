@@ -1,0 +1,120 @@
+<html ng-app="seleniumUiApp">
+  <head>
+    <title>Super Awesome Test Runner</title>
+    <script src="angular.min.js"></script>
+    <script src="lib/angular-route.min.js"></script>
+    <script src="lib/angular-sanitize.min.js"></script>
+    <script src="lib/CodeMirror.js"></script>
+    <script src="lib/CodeMirror-coffeescript.js"></script>
+    <script src="lib/ui-codemirror.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="lib/reset.css">
+    <link rel="stylesheet" href="lib/CodeMirror.css">
+    <link rel="stylesheet" href="lib/CodeMirror-twilight.css">
+    <link rel="stylesheet" href="lib/app.css">
+  </head>
+  <body ng-controller="seleniumUiController">
+    <div class="explorer-placeholder"></div>
+    <div class="breadcrumbs">
+      <span ng-click="init()" class="home">HOME</span> <span class="breadcrumb" ng-repeat="part in dir" ng-click="dirByPart($index)">/{{part}}</span><span class="breadcrumb-file" ng-show="currentTestFile">/{{currentTestFile.name}}</span>
+      <span class="test-running" ng-show="testRunning">TEST IN PROGRESS</span>
+      <span class="file-saved" ng-show="currentTestFile.justSaved">FILE SAVED</span>
+      <div class="runner-options">
+        <select ng-model="environment" ng-options="env.name for env in environments"></select>
+        .
+        <select ng-model="mint" ng-options="dom for dom in domains"></select>
+        <select ng-model="selenium" ng-options="sel.name for sel in seleniums"></select>
+        <select ng-model="browser" ng-options="browser.name for browser in browsers"></select>
+      </div>
+    </div>
+
+    <div class="explorer">
+      <div class="run" ng-click="runDirectory()" ng-show="testFiles.length">Run All Tests</div>
+      <div ng-repeat="subdir in subdirs" ng-click="pushDir(subdir)" class="folder">
+        /{{subdir}}
+      </div>  
+      <div ng-repeat="testFile in testFiles" ng-click="showTestFile(testFile)" class="file">
+        {{testFile}}
+      </div>  
+    </div>
+
+    <div class="main">
+      <div ng-show="currentTestFile" class="base">
+        <div class="helpers">
+          <span>Helpers: </span>
+          <span ng-repeat="helper in currentTestFile.helpers" class="helper">{{helper}} <span ng-click="removeHelper($index)" class="remove-helper">x</span></span>
+          <span class="add-helper" ng-click="addHelper()">+</span>
+          <span ng-hide="currentTestFile.sections.other !== null" ng-click="addGlobals(currentTestFile.sections)" class="add-globals">Add Globals</span>
+          <span class="run" ng-click="runTest(currentTestFile.sections)">Run File</span>
+          <span class="save" ng-click="saveFile()" ng-show="currentTestFile.changed">Save</span>
+        </div>
+        </div>
+        <div ng-if="currentTestFile.sections.other !== null" class="globals">
+          <div>Globals:</div>
+          <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="currentTestFile.sections.other" ng-change="testScript(currentTestFile.sections)" ui-onload="editorLoaded(currentTestFile.sections)"></ui-codemirror>
+        </div>
+        <div ng-repeat="describe in currentTestFile.sections.describes" class="describe">
+          <div class="describe-info">
+            <span class="describe-name">Describe: <input ng-model="describe.name" ng-change="currentTestFile.changed = true"></span>
+            <select ng-model="describe.extra" ng-change="currentTestFile.changed = true" ng-options="extra for extra in extras"></select>
+            <span ng-hide="describe.other !== null" ng-click="addGlobals(describe)" class="add-globals">Add Globals</span>
+            <span class="run" ng-click="runTest(describe)">Run Describe</span>
+            <span class="delete" ng-click="deleteDescribe(currentTestFile.sections.describes, $index)">Delete</span>
+          </div>
+          <div ng-if="describe.other !== null" class="globals">
+            <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="describe.other" ng-change="testScript(describe)" ui-onload="editorLoaded(describe)"></ui-codemirror>
+          </div>
+          <div ng-repeat="nestedDescribe in describe.describes" class="nested describe">
+            <div class="describe-info">
+              <span class="nested describe-name">Describe: <input ng-model="nestedDescribe.name" ng-change="currentTestFile.changed = true"></span>
+              <select ng-model="nestedDescribe.extra" ng-change="currentTestFile.changed = true" ng-options="extra for extra in extras"></select>
+              <span ng-hide="nestedDescribe.other !== null" ng-click="addGlobals(nestedDescribe)" class="add-globals">Add Globals</span>
+              <span class="run" ng-click="runTest(nestedDescribe, describe)">Run Describe</span>
+              <span class="delete" ng-click="deleteDescribe(describe.describes, $index)">Delete</span>
+            </div>
+            <div ng-if="nestedDescribe.other !== null" class="nested globals">
+              <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="nestedDescribe.other" ng-change="testScript(nestedDescribe)" ui-onload="editorLoaded(nestedDescribe)"></ui-codemirror>
+            </div>
+            <div ng-repeat="test in nestedDescribe.tests" class="nested tests">
+              <div class="nested test-info">
+                <span class="test-name">It: <input ng-model="test.name" ng-change="currentTestFile.changed = true"></span>
+                <select class="test-extra" ng-model="test.extra" ng-change="currentTestFile.changed = true" ng-options="extra for extra in extras"></select>
+                <span class="run" ng-click="runTest(test, nestedDescribe, describe)">Run Test</span>
+                <span class="delete" ng-click="deleteTest(nestedDescribe.tests, $index)">Delete</span>
+              </div>
+              <!--div ng-show="test.compileError">{{test.compileError.message}}</div-->
+              <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="test.code" ng-change="testScript(test)" ui-onload="editorLoaded(test)"></ui-codemirror>
+            </div>
+            <div class="nested describe-footer">
+              <span class="add-test" ng-click="addTest(nestedDescribe)">Add Test</span>
+            </div>
+          </div>
+          <div ng-repeat="test in describe.tests" class="tests">
+            <div class="test-info">
+              <span class="test-name">It: <input ng-model="test.name" ng-change="currentTestFile.changed = true"></span>
+              <select ng-model="test.extra" ng-change="currentTestFile.changed = true" ng-options="extra for extra in extras"></select>
+              <span class="run" ng-click="runTest(test, describe)">Run Test</span>
+              <span class="delete" ng-click="deleteTest(describe.tests, $index)">Delete</span>
+            </div>
+            <!--div ng-show="test.compileError">{{test.compileError.message}}</div-->
+            <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="test.code" ng-change="testScript(test)" ui-onload="editorLoaded(test)"></ui-codemirror>
+          </div>
+          <div class="describe-footer">
+            <span class="add-describe" ng-click="addDescribe(describe)">Add Describe</span>
+            <span class="add-test" ng-click="addTest(describe)">Add Test</span>
+          </div>
+        </div>
+        <div class="describe-footer" ng-show="currentTestFile">
+          <span class="add-describe" ng-click="addDescribe(currentTestFile.sections)">Add Describe</span>
+        </div>
+
+        <div ng-repeat="test in runningTests" class="test {{test.status}}">
+          {{test.fullTitle}}: {{test.status}}
+          <div ng-show="test.error">{{test.error}}</div>
+        </div>
+      </div>
+
+      <div ng-bind-html="testOutput"></div>
+    </div>
+  </body>
+</html>

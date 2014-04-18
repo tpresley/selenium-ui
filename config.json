@@ -1,0 +1,23 @@
+{
+  "environments": {
+    "default": {"protocol": "http://", "port": null, "entry": "/"},
+    "DEV 2": {"subdomain": "dev-2-cdn"},
+    "DEV 6": {"subdomain": "dev-6-cdn"},
+    "QA 5": {"subdomain": "qa5-dev"},
+    "LOCAL": {"subdomain": "local", "port": 3000},
+    "PROD": {"subdomain": "www"},
+    "STAGE PROD": {"subdomain": "stage-prod"},
+    "STAGE DEV": {"subdomain": "stage-dev4"}
+  },
+  "domains": ["intimint.com", "jewelmint.com", "shoemint.com", "stylemint.com"],
+  "seleniums": {
+    "LOCAL": {"url": "http://localhost:4444/wd/hub"},
+    "SauceLabs": {"url": "http://SauceConnect_01:a009b816-6329-4f8b-ab94-bb16563e4bfb@ondemand.saucelabs.com/wd/hub"}
+  },
+  "browsers": {
+    "Chrome": {"string": "chrome"},
+    "FireFox": {"string": "firefox"},
+    "IE": {"string": "internet explorer"},
+    "Safari": {"string": "safari"}
+  }
+}

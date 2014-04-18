@@ -1,0 +1,247 @@
+.body {
+  margin-top: 35px;
+}
+.breadcrumbs {
+  padding: 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 14;
+  width: 100%;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  z-index: 10000;
+  cursor: pointer;
+}
+.breadcrumb {
+  vertical-align: top;
+  color: #ccc;
+}
+.breadcrumb-file {
+  vertical-align: top;
+}
+.runner-options {
+  float: right;
+  position: relative;
+  top: -3px;
+  margin-right: 10px;
+}
+.test-running {
+  vertical-align: top;
+  color: red;
+  font-weight: bold;
+  margin-left: 20px;
+}
+.file-saved {
+  vertical-align: top;
+  color: green;
+  font-weight: bold;
+  margin-left: 20px;
+}
+.explorer {
+  padding: 10px;
+  position: fixed;
+  top: 30px;
+  left: 0;
+  background-color: #333;
+  width: 250px;
+  cursor: pointer;
+}
+.explorer-placeholder {
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100%;
+  background-color: black;
+}
+.explorer .folder {
+  color: orange;
+  font-weight: bold;
+}
+.explorer .file {
+  color: white;
+  font-weight: bold;
+}
+.main {
+  vertical-align: top;
+  margin: 35px 5px 5px 0px;
+  padding-left: 5px;
+  border-left: 270px solid black;
+}
+.home {
+  display: inline-block;
+  color: white;
+  background-color: blue;
+  border-radius: 5px;
+  border: 1px solid lightblue;
+  padding: 3px;
+  position: relative;
+  top: -5px;
+}
+.run {
+  display: inline-block;
+  color: white;
+  background-color: green;
+  border-radius: 5px;
+  border: 1px solid lightblue;
+  padding: 3px;
+  position: relative;
+}
+.save {
+  display: inline-block;
+  color: white;
+  background-color: grey;
+  border-radius: 5px;
+  border: 1px solid lightblue;
+  padding: 3px;
+  position: relative;
+}
+.CodeMirror {
+  height: auto;
+}
+.CodeMirror-scroll {
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.base {
+  background-color: #DDD;
+}
+.helpers {
+  cursor: pointer;
+}
+.helper {
+  padding: 2px;
+  display: inline-block;
+  border-radius: 5;
+  background-color: lightblue;
+  color: black;
+  margin: 2px 1px;
+  border: 1px solid blue;
+}
+.remove-helper {
+  display: inline-block;
+  position: relative;
+  top: -2px;
+  padding: 0 3px;
+  border-radius: 5px;
+  font-size: 10px;
+  background-color: pink;
+  color: red;
+  border: 1px solid red;
+}
+.remove-helper:hover {
+  color: black;
+  background-color: red;
+}
+.add-helper {
+  padding: 2px 5px;
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 5;
+  background-color: lightblue;
+  color: black;
+  margin: 2px 1px;
+  border: 1px solid blue;
+}
+.add-helper:hover {
+  background-color: blue;
+  color: white;
+}
+.globals {
+  background-color: #BBB;
+}
+.add-globals {
+  padding: 2px;
+  display: inline-block;
+  border-radius: 5;
+  background-color: lightblue;
+  color: black;
+  margin: 2px 1px;
+  border: 1px solid blue;
+}
+.add-describe, .add-test {
+  padding: 2px;
+  display: inline-block;
+  border-radius: 5;
+  background-color: lightblue;
+  color: black;
+  margin: 2px 1px;
+  border: 1px solid blue;
+  cursor: pointer;
+}
+.delete {
+  float: right;
+  padding: 2px;
+  display: inline-block;
+  border-radius: 5;
+  background-color: pink;
+  color: red;
+  margin: 2px 1px;
+  border: 1px solid red;
+  cursor: pointer;
+}
+.describe {
+  background-color: #BBB;
+  padding-bottom: 5px;
+  margin-top: 5px;
+}
+.describe-info {
+  padding: 5px;
+  background-color: #999;
+  cursor: pointer;
+}
+.describe-name {
+
+}
+.describe-footer {
+  padding: 5px;
+}
+.other {
+  margin: 0 5px 0 5px;
+}
+.tests {
+  margin-left: 10px;
+  margin-top: 5px;
+  background-color: #999;
+  position: relative;
+}
+.test-info {
+  padding: 5px;
+  cursor: pointer;
+}
+.test-name {
+  margin-left: 0;
+}
+.nested.describe {
+  background-color: #999;
+  margin: 10px;
+}
+.nested.describe-info {
+  background-color: #777;
+}
+.nested.describe-name {
+
+}
+.nested.other {
+
+}
+.nested.tests {
+  background-color: #777;
+}
+.nested.test-info {
+  background-color: #555;
+}
+.nested.test-name {
+
+}
+.test.passed {
+  color: green;
+}
+.test.failed {
+  color: red;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "SWD-UI",
+  "version": "0.0.3",
+  "main": "index.html",
+  "dependencies": {
+    "coffee-script": "~1.7.1"
+  }
+}
